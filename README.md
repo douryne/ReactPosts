@@ -2,6 +2,8 @@
 
 Pet project based on free youtube ReactJS course
 
+# Heroku: https://app-react-posts.herokuapp.com/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
