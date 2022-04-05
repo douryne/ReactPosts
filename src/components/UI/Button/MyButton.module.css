@@ -1,0 +1,17 @@
+.myBtn {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s linear;
+}
+
+.myBtn:hover {
+  opacity: 0.9;
+}
+
+.myBtn:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
