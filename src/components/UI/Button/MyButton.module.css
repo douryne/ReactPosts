@@ -4,7 +4,9 @@
   border-radius: 5px;
   font-family: inherit;
   cursor: pointer;
+  background-color: whitesmoke;
   transition: opacity 0.2s linear;
+  margin-top: 10px;
 }
 
 .myBtn:hover {

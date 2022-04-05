@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
+import MySelect from './components/UI/Select/MySelect';
 import './styles/App.css';
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
     { id: 3, title: 'JavaScript', body: 'Description' }
   ]);
 
+  const [selectedSort, setSelectedSort] = useState('');
+
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
   }
@@ -18,13 +21,31 @@ function App() {
     setPosts(posts.filter(post => post.id !== postToRemove.id));
   }
 
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
+  }
+
   return (
     <div className='App'>
       <PostForm createPost={createPost} />
       {
         posts.length 
-        ? <PostList removePost={removePost} posts={posts} title={'JS posts'}/>
-        : <h1 style={{textAlign: 'center'}}>Posts list is empty!</h1>
+        ? <>
+          <hr style={{ color: 'whitesmoke', margin: '15px 0' }} />
+          <MySelect
+            value={selectedSort}
+            onSelectChange={sortPosts}
+            options={[
+              { name: 'Sort by title', value: 'title', },
+              { name: 'Sort by description', value: 'body', }
+            ]}
+            defaultValue='Sort by'
+          />
+          <hr style={{ color: 'whitesmoke', margin: '15px 0' }} />
+          <PostList removePost={removePost} posts={posts} title={'JS posts'} />
+        </>
+        : <h1>Posts list is empty!</h1>
       }
     </div>
   );
