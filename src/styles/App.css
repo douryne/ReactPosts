@@ -21,28 +21,3 @@ body {
   width: 800px;
   font-size: 1rem;
 }
-
-.post {
-  display: flex;
-  padding: 1.2rem;
-  background-color: aliceblue;
-  border-radius: 10px;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1rem 0;
-}
-
-.post__btns button {
-  background-color: rgb(85, 123, 195);
-  color: aliceblue;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background-color 0.2s linear;
-}
-
-.post__btns button:hover {
-  background-color: rgb(73, 110, 178);
-}

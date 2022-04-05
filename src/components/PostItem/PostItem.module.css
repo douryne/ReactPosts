@@ -1,0 +1,14 @@
+.post {
+  display: flex;
+  padding: 1.2rem;
+  background-color: aliceblue;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.btns button {
+  background-color: cornflowerblue;
+  color: aliceblue;
+}
