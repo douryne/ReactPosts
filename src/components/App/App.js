@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react';
 import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
 import PostList from '../PostList';
+import MyButton from '../UI/Button/MyButton';
+import MyModal from '../UI/Modal/MyModal';
 import './App.css';
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
   ]);
 
   const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
+  const [modal, setModal] = useState(false);
 
   const sortedPosts = useMemo(() => {
     if(!filter.selectedSort) return posts;
@@ -25,6 +28,7 @@ function App() {
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    setModal(false);
   }
 
   const removePost = (postToRemove) => {
@@ -33,7 +37,10 @@ function App() {
 
   return (
     <div className='App'>
-      <PostForm createPost={createPost} />
+      <MyButton onClick={() => setModal(true)}>Create Post</MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm createPost={createPost} />
+      </MyModal>
       { posts.length
         ? 
         <>
