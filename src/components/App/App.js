@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PostForm from './components/PostForm';
-import PostList from './components/PostList';
-import MySelect from './components/UI/Select/MySelect';
-import './styles/App.css';
+import PostForm from '../PostForm';
+import PostList from '../PostList';
+import MySelect from '../UI/Select/MySelect';
+import './App.css';
 
 function App() {
   const [posts, setPosts] = useState([

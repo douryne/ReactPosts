@@ -3,6 +3,7 @@
   border: none;
   border-radius: 5px;
   font-family: inherit;
+  outline: none;
   cursor: pointer;
   background-color: whitesmoke;
   transition: opacity 0.2s linear;
