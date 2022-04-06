@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
 import PostList from '../PostList';
-import MySelect from '../UI/Select/MySelect';
 import './App.css';
 
 function App() {
   const [posts, setPosts] = useState([
-    { id: 1, title: 'JavaScript', body: 'Description' },
-    { id: 2, title: 'JavaScript', body: 'Description' },
-    { id: 3, title: 'JavaScript', body: 'Description' }
+    { id: 1, title: 'JavaScript', body: 'A' },
+    { id: 2, title: 'Python', body: 'C' },
+    { id: 3, title: 'C++', body: 'B' }
   ]);
 
-  const [selectedSort, setSelectedSort] = useState('');
+  const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
+
+  const sortedPosts = useMemo(() => {
+    if(!filter.selectedSort) return posts;
+    return [...posts].sort((a, b) => a[filter.selectedSort].localeCompare(b[filter.selectedSort]));
+  }, [filter.selectedSort, posts])
+
+  const sortedAndFiltered = useMemo(() => {
+    if(!filter.searchQuery) return sortedPosts;
+    return sortedPosts.filter((post) => post.title.toLowerCase().includes(filter.searchQuery.toLowerCase()))
+  }, [sortedPosts, filter.searchQuery])
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -21,29 +31,14 @@ function App() {
     setPosts(posts.filter(post => post.id !== postToRemove.id));
   }
 
-  const sortPosts = (sort) => {
-    setSelectedSort(sort);
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
-  }
-
   return (
     <div className='App'>
       <PostForm createPost={createPost} />
-      {
-        posts.length 
-        ? <>
-          <hr style={{ color: 'whitesmoke', margin: '15px 0' }} />
-          <MySelect
-            value={selectedSort}
-            onSelectChange={sortPosts}
-            options={[
-              { name: 'Sort by title', value: 'title', },
-              { name: 'Sort by description', value: 'body', }
-            ]}
-            defaultValue='Sort by'
-          />
-          <hr style={{ color: 'whitesmoke', margin: '15px 0' }} />
-          <PostList removePost={removePost} posts={posts} title={'JS posts'} />
+      { posts.length
+        ? 
+        <>
+          <PostFilter filter={filter} setFilter={setFilter}/>
+          <PostList removePost={removePost} posts={sortedAndFiltered} title={'JS posts'} />
         </>
         : <h1>Posts list is empty!</h1>
       }

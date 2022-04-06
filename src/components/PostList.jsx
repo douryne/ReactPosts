@@ -2,6 +2,9 @@ import React from 'react';
 import PostItem from './PostItem/PostItem';
 
 const PostList = ({posts, title, removePost}) => {
+
+  if(!posts.length) return <h1>Posts list is empty!</h1>
+
   return (
     <div>
       <h1>
