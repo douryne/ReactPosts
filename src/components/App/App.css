@@ -19,11 +19,17 @@ body {
 
 .App {
   width: 800px;
+  padding: 10px;
 }
 
 .App h1 {
   color: white;
   text-align: center;
+}
+
+.App__btns {
+  display: flex;
+  justify-content: space-between;
 }
 
 .post-enter {

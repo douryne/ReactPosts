@@ -38,7 +38,10 @@ function App() {
 
   return (
     <div className='App'>
-      <MyButton onClick={() => setModal(true)}>Create Post</MyButton>
+      <div className='App__btns'>
+        <MyButton onClick={() => setModal(true)}>Create Post</MyButton>
+        <MyButton onClick={() => setPosts([])}>Delete All Posts</MyButton>
+      </div>
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm createPost={createPost} />
       </MyModal>
