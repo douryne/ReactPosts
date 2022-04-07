@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PostService from '../../API/PostService';
+import useFetching from '../../hooks/useFetching';
 import { usePosts } from '../../hooks/usePosts';
 import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
@@ -13,22 +14,18 @@ function App() {
 
   useEffect(() => {
     fetchPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
   const [modal, setModal] = useState(false);
-  const [isPostsLoading, setIsPostsLoading]  = useState(true);
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
-
-  const fetchPosts = async () => {
+  const [fetchPosts, isPostsLoading, error] = useFetching(async () => {
     const posts = await PostService.getAll();
-    setTimeout(() => {
-      setPosts(posts);
-      setIsPostsLoading(false);
-    }, 1000);
-  }
+    setPosts(posts);
+  })
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -51,13 +48,16 @@ function App() {
       { isPostsLoading
         ?
         <div className='Loader'><MyLoader /></div>
-        : posts.length
-          ? 
-          <>
-            <PostFilter filter={filter} setFilter={setFilter}/>
-            <PostList removePost={removePost} posts={sortedAndFiltered} title={'JS posts'} />
-          </>
-          : <h1>Posts list is empty!</h1>
+        : error 
+          ?
+          <h1>{error}</h1>
+          : posts.length
+            ?
+            <>
+              <PostFilter filter={filter} setFilter={setFilter}/>
+              <PostList removePost={removePost} posts={sortedAndFiltered} title={'JS posts'} />
+            </>
+            : <h1>Posts list is empty!</h1>
       }
     </div>
   );

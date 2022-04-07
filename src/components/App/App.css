@@ -23,6 +23,7 @@ body {
 }
 
 .App h1 {
+  margin-top: 20px;
   color: white;
   text-align: center;
 }
