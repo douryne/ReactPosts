@@ -8,6 +8,7 @@
 
 body {
   background-color: rgb(85, 123, 195);
+  font-size: clamp(0.7rem, 0.6399999999999999rem + 0.30000000000000004vw, 1rem);
 }
 
 #root {
@@ -18,7 +19,6 @@ body {
 
 .App {
   width: 800px;
-  font-size: 1rem;
 }
 
 .App h1 {

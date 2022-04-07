@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePosts } from '../../hooks/usePosts';
 import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
@@ -8,15 +8,22 @@ import MyModal from '../UI/Modal/MyModal';
 import './App.css';
 
 function App() {
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'JavaScript', body: 'A' },
-    { id: 2, title: 'Python', body: 'C' },
-    { id: 3, title: 'C++', body: 'B' }
-  ]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
   const [modal, setModal] = useState(false);
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
+
+  const fetchPosts = async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {method: 'GET'});
+    const postsList = await response.json();
+    setPosts(postsList);
+  }
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
