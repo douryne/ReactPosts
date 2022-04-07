@@ -5,6 +5,7 @@ import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
 import PostList from '../PostList';
 import MyButton from '../UI/Button/MyButton';
+import MyLoader from '../UI/Loader/MyLoader';
 import MyModal from '../UI/Modal/MyModal';
 import './App.css';
 
@@ -23,8 +24,10 @@ function App() {
 
   const fetchPosts = async () => {
     const posts = await PostService.getAll();
-    setPosts(posts);
-    setIsPostsLoading(false);
+    setTimeout(() => {
+      setPosts(posts);
+      setIsPostsLoading(false);
+    }, 1000);
   }
 
   const createPost = (newPost) => {
@@ -47,7 +50,7 @@ function App() {
       </MyModal>
       { isPostsLoading
         ?
-        <h1>Loading...</h1>
+        <div className='Loader'><MyLoader /></div>
         : posts.length
           ? 
           <>

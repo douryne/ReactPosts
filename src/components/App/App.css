@@ -32,6 +32,12 @@ body {
   justify-content: space-between;
 }
 
+.Loader {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+}
+
 .post-enter {
   transform: translate(-1000px);
 }
