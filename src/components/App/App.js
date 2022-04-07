@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PostService from '../../API/PostService';
 import { usePosts } from '../../hooks/usePosts';
 import PostFilter from '../PostFilter';
 import PostForm from '../PostForm';
@@ -20,9 +21,8 @@ function App() {
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
 
   const fetchPosts = async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {method: 'GET'});
-    const postsList = await response.json();
-    setPosts(postsList);
+    const posts = await PostService.getAll();
+    setPosts(posts);
   }
 
   const createPost = (newPost) => {
