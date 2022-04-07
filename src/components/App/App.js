@@ -18,11 +18,13 @@ function App() {
 
   const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
   const [modal, setModal] = useState(false);
+  const [isPostsLoading, setIsPostsLoading]  = useState(true);
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
 
   const fetchPosts = async () => {
     const posts = await PostService.getAll();
     setPosts(posts);
+    setIsPostsLoading(false);
   }
 
   const createPost = (newPost) => {
@@ -40,13 +42,16 @@ function App() {
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm createPost={createPost} />
       </MyModal>
-      { posts.length
-        ? 
-        <>
-          <PostFilter filter={filter} setFilter={setFilter}/>
-          <PostList removePost={removePost} posts={sortedAndFiltered} title={'JS posts'} />
-        </>
-        : <h1>Posts list is empty!</h1>
+      { isPostsLoading
+        ?
+        <h1>Loading...</h1>
+        : posts.length
+          ? 
+          <>
+            <PostFilter filter={filter} setFilter={setFilter}/>
+            <PostList removePost={removePost} posts={sortedAndFiltered} title={'JS posts'} />
+          </>
+          : <h1>Posts list is empty!</h1>
       }
     </div>
   );
