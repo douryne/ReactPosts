@@ -28,11 +28,6 @@ body {
   text-align: center;
 }
 
-.App__btns {
-  display: flex;
-  justify-content: space-between;
-}
-
 .Loader {
   display: flex;
   margin-top: 20px;

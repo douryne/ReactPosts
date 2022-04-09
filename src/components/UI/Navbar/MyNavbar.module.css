@@ -1,0 +1,20 @@
+.navbar {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  margin: 10px 0;
+  align-items: center;
+}
+
+.navbar a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.navbar a:last-child {
+  margin: 0;
+}

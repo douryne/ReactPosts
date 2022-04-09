@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import PostService from '../../API/PostService';
 import useFetching from '../../hooks/useFetching';
 import { usePosts } from '../../hooks/usePosts';
-import PostFilter from '../PostFilter';
-import PostForm from '../PostForm';
-import PostList from '../PostList';
-import MyButton from '../UI/Button/MyButton';
-import MyLoader from '../UI/Loader/MyLoader';
-import MyModal from '../UI/Modal/MyModal';
+import PostFilter from '../../components/PostFilter';
+import PostForm from '../../components/PostForm';
+import PostList from '../../components/PostList';
+import MyButton from '../../components/UI/Button/MyButton';
+import MyLoader from '../../components/UI/Loader/MyLoader';
+import MyModal from '../../components/UI/Modal/MyModal';
 import {getPageCount} from '../../utils/pages';
-import './App.css';
-import MyPagination from '../UI/Pagination/MyPagination';
+import MyPagination from '../../components/UI/Pagination/MyPagination';
+import classes from './Posts.module.css';
 
-function App() {
+function Posts() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({searchQuery: '', selectedSort: ''})
   const [modal, setModal] = useState(false);
@@ -21,7 +21,7 @@ function App() {
   const [totalPageCount, setTotalPageCount] = useState(1);
 
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
-  const [fetchPosts, isPostsLoading, error] = useFetching(async () => {
+  const [fetchPosts, isPostsLoading, error] = useFetching(async (page) => {
     const response = await PostService.getAll(limit, page);
     const totalPostsCount = response.headers['x-total-count'];
     setTotalPageCount(getPageCount(totalPostsCount, limit));
@@ -29,14 +29,20 @@ function App() {
   })
 
   useEffect(() => {
-    fetchPosts(page);
+    fetchPosts();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, []);
 
   const deleteAllPosts = () => {
     setPosts([]);
     setFilter('');
+    setTotalPageCount(1);
     setPage(1);
+  }
+
+  const changePage = (page) => {
+    setPage(page);
+    fetchPosts(page);
   }
 
   const createPost = (newPost) => {
@@ -50,8 +56,8 @@ function App() {
   }
 
   return (
-    <div className='App'>
-      <div className='App__btns'>
+    <div>
+      <div className={classes.btns}>
         <MyButton onClick={() => setModal(true)}>Create Post</MyButton>
         <MyButton onClick={deleteAllPosts}>Delete All Posts</MyButton>
       </div>
@@ -76,7 +82,7 @@ function App() {
               <MyPagination 
                 page={page} 
                 totalPageCount={totalPageCount} 
-                setPage={setPage} 
+                setPage={changePage} 
               />
             </>
             : <h1>Posts list is empty!</h1>
@@ -85,4 +91,4 @@ function App() {
   );
 }
 
-export default App;
+export default Posts;

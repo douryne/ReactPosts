@@ -4,9 +4,9 @@ const useFetching = (callback) => {
   const [isLoading, setIsLoading]  = useState(true);
   const [error, setError] = useState('');
 
-  const fetching = async () => {
+  const fetching = async (page) => {
       try {
-      await callback();
+      await callback(page);
     } catch (e) {
       setError(e.message);
     } finally {
