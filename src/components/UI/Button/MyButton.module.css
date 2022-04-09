@@ -7,11 +7,18 @@
   cursor: pointer;
   background-color: whitesmoke;
   transition: opacity 0.2s linear;
-  margin-top: 10px;
 }
 
 .myBtn:hover {
-  opacity: 0.9;
+  opacity: 0.8;
+}
+
+.myBtn:focus-visible {
+  border: 2px solid black;
+}
+
+.myBtn:focus:not(:focus-visible) {
+  border: none;
 }
 
 .myBtn:disabled {
