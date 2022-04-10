@@ -1,19 +1,17 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/index';
 import MyButton from '../components/UI/Button/MyButton';
 import MyInput from '../components/UI/Input/MyInput';
 import { useNavigate } from 'react-router-dom';
+import { useInputs } from '../hooks/useInputs';
 
 const Login = () => {
   const {setIsAuth} = useContext(AuthContext);
-  const [isUserNameInpEmty, setIsUserNameInpEmty] = useState(true);
-  const [IsPasswordInpEmty, setIsPasswordInpEmty] = useState(true);
+  const [form, setForm] = useState({username: '', password: ''});
 
   const navigate = useNavigate();
 
-  const areInputsEmpty = useMemo(() => {
-    return (isUserNameInpEmty === false && IsPasswordInpEmty === false);
-  }, [isUserNameInpEmty, IsPasswordInpEmty])
+  const isFormFilled = useInputs(form);
 
   const login = (event) => {
     event.preventDefault();
@@ -26,9 +24,19 @@ const Login = () => {
     <div>
       <h1>Login</h1>
       <form onSubmit={login}>
-        <MyInput onChange={() => setIsUserNameInpEmty(false)} type='text' placeholder='Username'/>
-        <MyInput onChange={() => setIsPasswordInpEmty(false)} type='password'  placeholder='Password'/>
-        <MyButton disabled={!areInputsEmpty}>Login</MyButton>
+        <MyInput 
+          value={form.username}
+          onChange={event => setForm({...form, username: event.target.value})}
+          type='text'
+          placeholder='Username'
+        />
+        <MyInput
+          value={form.password}
+          onChange={event => setForm({...form, password: event.target.value})}
+          type='password' 
+          placeholder='Password'
+        />
+        <MyButton disabled={!isFormFilled}>Login</MyButton>
       </form>
     </div>
   );
