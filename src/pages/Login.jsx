@@ -18,7 +18,8 @@ const Login = () => {
   const login = (event) => {
     event.preventDefault();
     setIsAuth(true);
-    navigate('/');
+    navigate('/posts');
+    localStorage.setItem('auth', true);
   }
 
   return (

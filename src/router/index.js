@@ -6,9 +6,9 @@ import Login from "../pages/Login";
 import { Navigate } from 'react-router-dom';
 
 export const privateRoutes = [
-  {path: '/', element: Posts},
+  {path: '/posts', element: Posts},
   {path: '/about', element: About},
-  {path: '/:id', element: PostPage},
+  {path: '/posts/:id', element: PostPage},
   {path: '/*', element: Error}
 ]
 

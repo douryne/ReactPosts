@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import MyNavbar from '../components/UI/Navbar/MyNavbar';
@@ -7,11 +7,22 @@ import { AuthContext } from '../context/index';
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if(JSON.parse(localStorage.getItem('auth'))) {
+      setIsAuth(true);
+    }
+    setIsLoading(false);
+  }, [])
+  
+  // console.log(isAuth)
 return (
     <div className='App'>
       <AuthContext.Provider value={{
         isAuth,
-        setIsAuth
+        setIsAuth,
+        isLoading
       }}>
         <BrowserRouter>
         <MyNavbar />
