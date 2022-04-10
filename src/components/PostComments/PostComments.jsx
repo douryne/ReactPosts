@@ -26,7 +26,7 @@ const PostComments = ({id}) => {
           : <div>
             {
               comments.map(comment =>
-                <div className={classes.comment}>
+                <div key={comment.id} className={classes.comment}>
                   <h4>{comment.name}</h4>
                   <h5>{comment.email}</h5>
                   <p>{comment.body}</p>
