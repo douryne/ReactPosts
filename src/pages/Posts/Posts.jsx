@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PostService from '../../API/PostService';
 import useFetching from '../../hooks/useFetching';
 import { usePosts } from '../../hooks/usePosts';
@@ -9,8 +9,8 @@ import MyButton from '../../components/UI/Button/MyButton';
 import MyLoader from '../../components/UI/Loader/MyLoader';
 import MyModal from '../../components/UI/Modal/MyModal';
 import {getPageCount} from '../../utils/pages';
-import MyPagination from '../../components/UI/Pagination/MyPagination';
 import classes from './Posts.module.css';
+import { useObserver } from '../../hooks/useObserver';
 
 function Posts() {
   const [posts, setPosts] = useState([]);
@@ -19,30 +19,30 @@ function Posts() {
   const [limit] = useState(10);
   const [page, setPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(1);
+  const lastElement = useRef();
 
   const sortedAndFiltered = usePosts(posts, filter.searchQuery, filter.selectedSort);
-  const [fetchPosts, isPostsLoading, error] = useFetching(async (page) => {
-    const response = await PostService.getAll(limit, page);
+
+  const [fetchPosts, isPostsLoading, error] = useFetching(async (page, posts) => {
+    const response = await PostService.getByPage(limit, page);
     const totalPostsCount = response.headers['x-total-count'];
     setTotalPageCount(getPageCount(totalPostsCount, limit));
-    setPosts(response.data);
+    setPosts([...posts, ...response.data]);
   })
 
+  useObserver(lastElement, page < totalPageCount, isPostsLoading, () => {
+    setPage(page + 1);
+  });
+
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(page, posts);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   const deleteAllPosts = () => {
     setPosts([]);
     setFilter('');
     setTotalPageCount(1);
-    setPage(1);
-  }
-
-  const changePage = (page) => {
-    setPage(page);
-    fetchPosts(page);
   }
 
   const createPost = (newPost) => {
@@ -64,28 +64,30 @@ function Posts() {
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm createPost={createPost} />
       </MyModal>
-      { isPostsLoading
-        ?
-        <div className='Loader'><MyLoader /></div>
-        : error 
+
+      {
+        Boolean(posts.length) && <PostFilter filter={filter} setFilter={setFilter}/>
+      }
+      {
+        error
           ?
           <h1>{error}</h1>
-          : posts.length
-            ?
-            <>
-              <PostFilter filter={filter} setFilter={setFilter}/>
-              <PostList 
-                removePost={removePost} 
-                posts={sortedAndFiltered} 
-                title={'JS posts'} 
-              />
-              <MyPagination 
-                page={page} 
-                totalPageCount={totalPageCount} 
-                setPage={changePage} 
-              />
-            </>
-            : <h1>Posts list is empty!</h1>
+          :
+          <PostList
+            removePost={removePost} 
+            posts={sortedAndFiltered} 
+            title={'JS posts'} 
+          />
+      }
+      {
+        posts.length
+        ?
+        <div ref={lastElement} style={{marginTop: '-20px', height: '20px'}}/>
+        :
+        <></>
+      }
+      {
+        isPostsLoading && <div className='Loader'><MyLoader /></div>
       }
     </div>
   );

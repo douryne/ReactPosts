@@ -4,13 +4,14 @@ const useFetching = (callback) => {
   const [isLoading, setIsLoading]  = useState(true);
   const [error, setError] = useState('');
 
-  const fetching = async (page) => {
+  const fetching = async (page, posts) => {
       try {
-      await callback(page);
+      setIsLoading(true);
+      await callback(page, posts);
     } catch (e) {
       setError(e.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
