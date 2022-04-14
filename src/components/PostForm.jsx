@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import { useInputs } from '../hooks/useInputs';
+import { useBtnWithFilledForm } from '../hooks/useBtnWithFilledForm';
 import MyButton from './UI/Button/MyButton';
 import MyInput from './UI/Input/MyInput';
 
 const PostForm = ({createPost}) => {
   const [post, setPost] = useState({title: '', body: ''})
 
-  const isPostFilled = useInputs(post);
+  const isFormFilled = useBtnWithFilledForm(post);
 
   const createNewPost = (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ const PostForm = ({createPost}) => {
         type='text'
         placeholder='Post description'
       />
-      <MyButton disabled={!isPostFilled} onClick={createNewPost}>Create post</MyButton>
+      <MyButton disabled={!isFormFilled} onClick={createNewPost}>Create post</MyButton>
   </form>
   );
 };

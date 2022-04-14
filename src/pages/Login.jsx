@@ -3,7 +3,7 @@ import { AuthContext } from '../context/index';
 import MyButton from '../components/UI/Button/MyButton';
 import MyInput from '../components/UI/Input/MyInput';
 import { useNavigate } from 'react-router-dom';
-import { useInputs } from '../hooks/useInputs';
+import { useBtnWithFilledForm } from '../hooks/useBtnWithFilledForm';
 
 const Login = () => {
   const {setIsAuth} = useContext(AuthContext);
@@ -11,7 +11,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const isFormFilled = useInputs(form);
+  const isFormFilled = useBtnWithFilledForm(form);
 
   const login = (event) => {
     event.preventDefault();
